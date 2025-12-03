@@ -19,9 +19,18 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'title',
         'name',
         'email',
+        'phone',
         'password',
+        'city_id',
+        'country_id',
+        'slug',
+        'username',
+        'date_of_birth',
+        'photo',
+        'cnic',
     ];
 
     /**
@@ -41,5 +50,30 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'date_of_birth' => 'date',
     ];
+
+    /**
+     * Get the user roles for the user.
+     */
+    public function userRoles()
+    {
+        return $this->hasMany(User_Userrole::class, 'user_id');
+    }
+
+    /**
+     * Get the city for the user.
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    /**
+     * Get the country for the user.
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

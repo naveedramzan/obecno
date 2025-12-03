@@ -15,6 +15,13 @@ class Company extends Model
     protected $table = 'companies';
     
     protected $fillable = [
-                            'title'
+                            'title',
+                            'slug',
+                            'description',
+                            'website',
+                            'team_size',
+                            'founded',
+                            'founded_year',
+                            'photo'
                         ];
 }

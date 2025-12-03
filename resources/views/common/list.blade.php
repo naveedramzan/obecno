@@ -97,6 +97,8 @@
                             <td>{{ date('d-M-Y', strtotime($ld->$fl)) }}</td>
                           @elseif(strpos($fl, 'photo') > -1)
                             <td><img src="{{ $table.'/'.$ld->id.'/'.$ld->$fl }}" width="80" style="border:1px solid #ccc; border-radius:5px;"></td>
+                          @elseif($fl == 'status')
+                            
                           @elseif($fl == 'feedback')
                             <td>
                               @if($ld->overall_percentage == null)
@@ -134,6 +136,20 @@
                             | 
                             <a href="{{ url('admin-list-locations/'.$ld->id) }}">
                              <img src="/admin/assets/building.png" width="20">
+                            </a>
+                            | 
+                            <a href="{{ url('admin-list-companies_modules/'.$ld->id) }}">
+                             <img src="/admin/assets/options.png" width="20">
+                            </a>
+                            | 
+                            <a href="{{ url('admin-list-subscriptions/'.$ld->id) }}">
+                             <img src="/admin/assets/refresh.png" width="20">
+                            </a>
+                          @endif
+                          @if($table == 'subscriptions')
+                          | 
+                            <a href="{{ url('admin-list-subscriptions/'.$ld->id) }}">
+                             <img src="/admin/assets/dollar-sign.png" width="20">
                             </a>
                           @endif
                         </td>

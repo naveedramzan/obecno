@@ -6,7 +6,7 @@
         </div>
         <h5>Welcome {{ auth()->user()->title }}</h5>
         <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/dashboard') }}">
+          <li class="nav-item"><a class="nav-link" href="{{ url('/super-admin-dashboard') }}">
             <svg class="nav-icon">
               <use xlink:href="/node_modules/@coreui/icons/sprites/free.svg#cil-speedometer"></use>
             </svg> Dashboard</a>
@@ -71,6 +71,7 @@
               <li class="nav-item"><a class="nav-link" href="{{ url('/admin-list-categories') }}"><span class="nav-icon"></span> Categories</a></li>
               <li class="nav-item"><a class="nav-link" href="{{ url('/admin-list-timezones') }}"><span class="nav-icon"></span> Timezones</a></li>
               <li class="nav-item"><a class="nav-link" href="{{ url('/admin-list-currencies') }}"><span class="nav-icon"></span> Currencies</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url('/admin-list-modules') }}"><span class="nav-icon"></span> Modules</a></li>
             </ul>
           </li>
           <hr>

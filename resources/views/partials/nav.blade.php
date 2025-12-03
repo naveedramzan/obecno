@@ -1,4 +1,3 @@
-@if(\Session::get('loggedInUserRoles') == null)
   <base href="./">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,13 +30,7 @@
   <link href="{{ asset('/admin/css/examples.css') }}" rel="stylesheet">
   <link href="{{ asset('/front/css/developer.css') }}" rel="stylesheet">
   <link href="/node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css" rel="stylesheet">
-  <div class="alert alert-warning">Your session is logged out!, Please Log-in! <a href="{{ url('/login') }}">Log-in</a>!</div>
-    @if(count(explode('/', url()->current())) > 3)
-    @php 
-     exit;
-    @endphp
-  @endif
-@else
+  
 
   <header class="header header-sticky mb-4">
   <div class="container-fluid">
@@ -95,4 +88,3 @@
   </div>
   </header>
 
-@endif

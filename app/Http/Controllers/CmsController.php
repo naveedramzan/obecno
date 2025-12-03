@@ -32,7 +32,7 @@ class CmsController extends Controller
 		}
 
 		$allCompaniesHomepage = Company::where('status', '1')->get();
-		return view('cms.index', compact('companyDetail', 'countriesList', 'services', 'slug', 'allCompaniesHomepage'));	
+		return view('cms.index', compact('companyDetail', 'countriesList',  'allCompaniesHomepage'));	
 	}
 
 	public function index(Request $request){
@@ -74,5 +74,9 @@ class CmsController extends Controller
 	
 	public function features(Request $request){
 		return view('cms.features');	
+    }
+
+	public function testing(){
+        dd(encryptPassword('admin'));
     }
 }

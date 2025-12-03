@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 27, 2025 at 05:49 PM
+-- Generation Time: Dec 03, 2025 at 06:52 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -149,12 +149,23 @@ CREATE TABLE `attendance` (
   `breakout` time DEFAULT NULL,
   `breakin` time DEFAULT NULL,
   `checkout` time DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `expected_hours` int DEFAULT NULL,
   `hours_worked` time DEFAULT NULL,
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `status` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `user_id`, `attendance_date`, `checkin`, `breakout`, `breakin`, `checkout`, `location_id`, `expected_hours`, `hours_worked`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
+(2, 4, '2025-11-24', '00:20:25', NULL, NULL, '15:42:00', 0, 8, '00:00:05', '2025-11-24 05:18:00', '2025-11-24 10:42:56', NULL, ''),
+(3, 10, '2025-11-24', '00:20:25', NULL, NULL, '18:30:00', 0, 8, '00:00:05', '2025-11-24 08:20:00', '2025-11-24 13:31:23', NULL, ''),
+(4, 10, '2025-11-26', '08:52:41', NULL, NULL, NULL, 0, 8, '00:00:00', '2025-11-26 03:52:41', '2025-11-26 03:52:41', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -292,9 +303,65 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `title`, `slug`, `description`, `website`, `expertise`, `team_size`, `photo`, `Founded`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
-(1, 'Naveed Ramzan', 'naveedramzan', 'Provide Training & Consultancy on Process Improvement and Team Development which are powerful ways to improve the performance of a team or organization. Provide Training & Consultancy on Process Improvement and Team Development which are powerful ways to improve the performance of a team or organization. Provide Training & Consultancy on Process Improvement and Team Development which are powerful ways to improve the performance of a team or organization.', 'https://www.naveedramzan.com', 'Coaching, Workshops, Public Speaking, Training and Development, Consultancy, and Idea and Digital Transformation', '1-4', 'naveed+ramzan.jpeg', '2010', '2024-10-05 19:18:11', '2024-12-02 14:19:25', NULL, '1'),
-(2, 'Agile Pakistan', 'agilepakistan', 'Agile Pakistan (formerly Pakistan Agile Development Society ) is a self organizing body working for the promotion of using Agile project development methods. We believe that our contribution in \"any form\" can bring the improvement in any business, project or task. We are looking for volunteers (members) who can take active part in developing, promoting and educating the people from different industries with the goal to continuously improve the successful project delivery rate. Lets have a cooperative effort to spread the knowledge and pay something back to our country.', 'https://www.agile.org.pk', 'Consulting, Coaching, Agile Product Development, Agile Frameworks, Agile Training', '66', 'agile-logo.png', '2014', '2024-12-03 11:58:11', '2024-12-03 12:03:57', NULL, '1'),
-(3, 'TrainingsPK', 'trainings-pk', 'A platform built with a vision to equip our workforce with skills of the future. Empowering individuals to enable them in getting sustainable living and an edge in the competitive world. The team behind this initiative has more than 2 decades of experience and they have held diverse portfolios along with human capital development interventions. Trainings.PK will bring innovative and immersive learning experiences through its platform and prepare you in this fast-changing world through training, workshops, webinars, and seminars on future and emerging skills through a network of experts.', 'https://www.trainings.pk', 'agile coaching, happiness at work, project management, personality development, office management, web development, mobile app development, on-demand trainings, leadership development, communication skills, emotional intelligence, marketing and branding, quality assurance, DevOps, learn language and services management', '5-10', 'trainings-pk-logo.jpeg', '2014', '2024-12-05 16:48:25', '2024-12-06 10:30:31', NULL, '1');
+(1, 'obecno', 'obecno', 'Simplify Attendance - it\'s all about time and management', 'https://www.obecno.com', NULL, '2', '1763560587_obecno-icon.png', '2025', '2025-11-17 10:47:07', '2025-11-20 17:14:42', NULL, '1'),
+(2, 'Ahmed Solutions', 'ahmed-solutions', 'Failed to create company. Please try again. Failed to create company.', 'https://www.ahmedsolutions.com', NULL, '4', '1763560627_AH-icon.png', '2020', '2025-11-19 10:32:02', '2025-11-20 17:15:11', NULL, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `companies_modules`
+--
+
+CREATE TABLE `companies_modules` (
+  `id` int NOT NULL,
+  `company_id` int NOT NULL,
+  `module_id` int NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `companies_modules`
+--
+
+INSERT INTO `companies_modules` (`id`, `company_id`, `module_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2, 1, 12, '2025-11-24 08:42:14', '2025-11-24 08:42:14', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `companysettings`
+--
+
+CREATE TABLE `companysettings` (
+  `id` int NOT NULL,
+  `company_id` int NOT NULL,
+  `check_in_time` time DEFAULT NULL,
+  `check_out_time` time DEFAULT NULL,
+  `grace_period` enum('no-grace','5-min','10-min','15-min','30-min') DEFAULT NULL,
+  `working_days` json DEFAULT NULL,
+  `break_time` int DEFAULT NULL,
+  `calendar_country_id` int DEFAULT NULL,
+  `year_start_date` date DEFAULT NULL,
+  `casual_leaves` int DEFAULT NULL,
+  `sick_leaves` int DEFAULT NULL,
+  `emergency_leaves` int DEFAULT NULL,
+  `maternity_leaves` int DEFAULT NULL,
+  `paternity_leaves` int DEFAULT NULL,
+  `bereavement_leave` int DEFAULT NULL,
+  `compensation_leaves` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `companysettings`
+--
+
+INSERT INTO `companysettings` (`id`, `company_id`, `check_in_time`, `check_out_time`, `grace_period`, `working_days`, `break_time`, `calendar_country_id`, `year_start_date`, `casual_leaves`, `sick_leaves`, `emergency_leaves`, `maternity_leaves`, `paternity_leaves`, `bereavement_leave`, `compensation_leaves`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, '10:00:00', '19:00:00', '15-min', '[\"mon\", \"tue\", \"wed\", \"thr\", \"fri\"]', 60, 1, '2025-01-01', 10, 10, 5, 45, 10, 5, NULL, '2025-11-24 08:42:14', '2025-11-24 08:42:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -319,34 +386,6 @@ CREATE TABLE `countries` (
 INSERT INTO `countries` (`id`, `title`, `code2`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
 (1, 'Pakistan', 'pk', '2024-10-06 14:25:30', '2024-10-20 13:28:28', NULL, '1'),
 (2, 'United States of America', 'US', '2024-12-02 18:04:57', NULL, NULL, '1');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `countries_companies`
---
-
-CREATE TABLE `countries_companies` (
-  `id` int NOT NULL,
-  `country_id` int NOT NULL,
-  `company_id` int NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `city_id` int DEFAULT NULL,
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `contact_phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `contact_email` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `countries_companies`
---
-
-INSERT INTO `countries_companies` (`id`, `country_id`, `company_id`, `created_at`, `updated_at`, `deleted_at`, `city_id`, `address`, `contact_phone`, `contact_email`) VALUES
-(1, 1, 1, '2024-12-02 14:31:14', '2024-12-02 18:05:30', NULL, 1, 'Cowork24, I-10/3, Street 6, Islamabad', NULL, NULL),
-(2, 2, 1, '2024-12-02 18:06:02', NULL, NULL, 2, 'Newyork', NULL, NULL),
-(4, 1, 3, '2024-12-05 16:50:54', '2024-12-05 16:50:54', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -499,6 +538,7 @@ INSERT INTO `employmenttypes` (`id`, `title`, `type`, `base_salary`, `hourly_sal
 CREATE TABLE `holidays` (
   `id` int NOT NULL,
   `title` varchar(255) NOT NULL,
+  `country_id` int NOT NULL,
   `holiday_date` date NOT NULL,
   `reoccuring` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -512,8 +552,10 @@ CREATE TABLE `holidays` (
 -- Dumping data for table `holidays`
 --
 
-INSERT INTO `holidays` (`id`, `title`, `holiday_date`, `reoccuring`, `created_at`, `updated_at`, `deleted_at`, `status`, `description`) VALUES
-(1, 'Iqbal Day', '2025-11-09', 'yearly', '2025-09-23 12:44:36', NULL, NULL, '1', NULL);
+INSERT INTO `holidays` (`id`, `title`, `country_id`, `holiday_date`, `reoccuring`, `created_at`, `updated_at`, `deleted_at`, `status`, `description`) VALUES
+(1, 'Iqbal Day', 1, '2025-11-09', 'yearly', '2025-09-23 12:44:36', '2025-11-24 16:56:49', NULL, '1', NULL),
+(2, 'Quaid Day', 1, '2025-12-25', 'yearly', '2025-11-24 16:57:41', NULL, NULL, '1', NULL),
+(3, 'Pakistan Day', 1, '2025-03-23', 'yearly', '2025-11-24 16:57:41', NULL, NULL, '1', NULL);
 
 -- --------------------------------------------------------
 
@@ -568,6 +610,14 @@ CREATE TABLE `leaves` (
   `approved_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `leaves`
+--
+
+INSERT INTO `leaves` (`id`, `user_id`, `leavetype_id`, `start_date`, `end_date`, `description`, `created_at`, `updated_at`, `deleted_at`, `status`, `approved_user_id`) VALUES
+(1, 9, 4, '2025-11-24', '2025-11-24', NULL, '2025-11-21 16:50:43', '2025-11-24 08:06:22', NULL, 'a', 4),
+(2, 10, 4, '2025-11-26', '2025-11-26', NULL, '2025-11-24 11:04:07', '2025-11-24 11:04:07', NULL, 'p', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -621,6 +671,7 @@ CREATE TABLE `locations` (
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `timezone_id` int NOT NULL,
   `user_id` int NOT NULL,
+  `city_id` int NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -631,8 +682,58 @@ CREATE TABLE `locations` (
 -- Dumping data for table `locations`
 --
 
-INSERT INTO `locations` (`id`, `company_id`, `address`, `phone`, `email`, `lat_lon`, `title`, `timezone_id`, `user_id`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
-(0, 3, 'Office 2-A, Cowork24 Premium, Main PWD Road, Islamabad', '+3155193534', 'support@trainings.pk', '33.5714237,73.1442313', 'Head Office', 18, 3, '2025-09-23 09:10:15', '2025-09-25 11:36:41', NULL, '1');
+INSERT INTO `locations` (`id`, `company_id`, `address`, `phone`, `email`, `lat_lon`, `title`, `timezone_id`, `user_id`, `city_id`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
+(1, 1, 'Office 2-A, Cowork24, Gulberg Green, Islamabad', '+3155193534', 'naveed.ramzan@gmail.com', '33.5714237,73.1442313', 'Head Office', 18, 1, 1, '2025-09-23 09:10:15', '2025-11-17 11:26:57', NULL, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `modules`
+--
+
+CREATE TABLE `modules` (
+  `id` int NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` int DEFAULT NULL,
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `modules`
+--
+
+INSERT INTO `modules` (`id`, `title`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
+(1, 'Location Tracking', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(2, 'Groups & Teams ', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(3, 'Shifts & Scheduling', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(4, 'Task Management', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(5, 'Payroll', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(6, 'Breaks Management', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(7, 'Leaves & Holidays', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(8, 'Activity Tracking ', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(9, 'Overtime', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(10, 'Milage Tracking', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(11, 'Tax Filing', '2025-11-18 06:00:55', NULL, NULL, '1'),
+(12, 'Attendance', '2025-11-18 16:28:15', NULL, NULL, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` char(36) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `notifiable_type` varchar(255) NOT NULL,
+  `notifiable_id` bigint UNSIGNED NOT NULL,
+  `data` text NOT NULL,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -820,7 +921,7 @@ CREATE TABLE `subscriptions` (
 --
 
 INSERT INTO `subscriptions` (`id`, `company_id`, `subscriptionplan_id`, `start_date`, `end_date`, `referral_user_id`, `comments`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, 1, '2025-10-01', '2025-10-31', 1, NULL, '1', '0000-00-00 00:00:00', NULL, NULL);
+(1, 1, 1, '2025-10-01', '2025-10-31', 1, NULL, '0', '0000-00-00 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -881,6 +982,8 @@ INSERT INTO `timezones` (`id`, `title`, `timezone`, `created_at`, `updated_at`, 
 CREATE TABLE `userroles` (
   `id` bigint UNSIGNED NOT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_id` int DEFAULT NULL,
+  `is_show` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -890,13 +993,17 @@ CREATE TABLE `userroles` (
 -- Dumping data for table `userroles`
 --
 
-INSERT INTO `userroles` (`id`, `title`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Administrator', NULL, NULL, NULL),
-(2, 'Customer', NULL, NULL, NULL),
-(3, 'Company Admin', NULL, NULL, NULL),
-(4, 'Company Office Admin', NULL, NULL, NULL),
-(5, 'Employee', NULL, NULL, NULL),
-(6, 'Customer Support', NULL, NULL, NULL);
+INSERT INTO `userroles` (`id`, `title`, `company_id`, `is_show`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Administrator', NULL, '0', NULL, NULL, NULL),
+(2, 'Customer', NULL, '0', NULL, NULL, NULL),
+(3, 'Company Admin', NULL, '1', NULL, NULL, NULL),
+(4, 'Company Office Admin', NULL, '0', NULL, NULL, NULL),
+(5, 'Employee', NULL, '0', NULL, NULL, NULL),
+(6, 'Customer Support', NULL, '0', NULL, NULL, NULL),
+(7, 'Software Developer', NULL, '0', '2025-11-20 17:17:38', '2025-11-20 17:17:38', NULL),
+(8, 'Project Manager', NULL, '0', '2025-11-20 17:17:38', '2025-11-20 17:17:38', NULL),
+(9, 'HR Manager', NULL, '0', '2025-11-20 17:17:38', '2025-11-20 17:17:38', NULL),
+(10, 'QA Engineer', NULL, '0', '2025-11-20 17:27:12', '2025-11-20 17:27:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -908,6 +1015,7 @@ CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `photo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -916,7 +1024,7 @@ CREATE TABLE `users` (
   `cnic` char(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
@@ -926,9 +1034,15 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `title`, `email`, `password`, `phone`, `photo`, `country_id`, `city_id`, `cnic`, `date_of_birth`, `created_at`, `updated_at`, `deleted_at`, `status`, `remember_token`) VALUES
-(1, 'Naveed Ramzan', 'naveed.ramzan@gmail.com', '$2y$10$zVp/XidqjD0/bxVytgIBbeAfxz53ztGXS7DmpI2h7uQI2QLSwSFs.', '+923335430621', 'naveed-ramzan.png', 1, 1, NULL, '1982-04-16', NULL, NULL, NULL, '1', '6OmCBMjEjphkw5sDSWlGIPqKxlPjqIM0T1OUwN9n6UFarel14PlHez2pSrnn'),
-(3, 'Madiha Naveed', 'support@trainings.pk', '$2y$10$NvGtu.QM3oYOq8fJZj6rnuq4BIXQSnJR5yFHpR2TjiGXPkIfGoxYG', '03155193534', 'madiha-training.png', 1, 1, NULL, '1987-03-19', '2024-12-05 16:32:13', '2024-12-05 16:32:13', NULL, '1', '7ZBpoIITp8jlkJ3DYtogQac9hTWhjMmsLNEWrP32tGxp9h5P3Yjlj7qrNAw7');
+INSERT INTO `users` (`id`, `title`, `email`, `username`, `password`, `phone`, `photo`, `country_id`, `city_id`, `cnic`, `date_of_birth`, `created_at`, `updated_at`, `deleted_at`, `status`, `remember_token`) VALUES
+(1, 'Naveed Ramzan', 'naveed.ramzan@gmail.com', NULL, '$2y$10$HR9R/iIHwyb3fmrecy8mhO.v/jBpL6F7l8LHBG/I/zup8Usaklsme', '+923335430621', 'naveed-ramzan.png', 1, 1, NULL, '1982-04-16', NULL, '2025-11-26 03:47:57', NULL, '1', 'je0NA3qCx8tLirC4ZXeAib7C10Dr9JKZ2pfy3i0AWG1sO3XNME5kNNp4wGw7'),
+(4, 'Ahmed Hassan', 'me2ahmedhassan@gmail.com', 'ahmed-hassan', '$2y$10$HR9R/iIHwyb3fmrecy8mhO.v/jBpL6F7l8LHBG/I/zup8Usaklsme', NULL, '1763534307_ahmad-hassan.jpg', 1, 1, NULL, NULL, '2025-11-17 13:12:27', '2025-11-26 05:02:15', NULL, '', '1c00bhDxLMdARaNfKzTz1Pz0IoauhkhFT9ExznmZ80e3f9h0oO60SRmiWcke'),
+(5, 'John Doe', 'john.doe@obecno.com', 'john-doe', '$2y$10$TblGmR7vifszxqMxFwy3uewOqF9vdNwh.9IyHTxWL/l7h6gcJqiNu', NULL, NULL, 1, 1, NULL, NULL, '2025-11-20 17:17:38', '2025-11-20 17:17:38', NULL, '', ''),
+(6, 'Jane Smith', 'jane.smith@obecno.com', 'jane-smith', '$2y$10$xi7GLy.FvpPH5hfnvFjGk.k941mktiaIE99ggO/jzq/2rC7k0QtrG', NULL, NULL, 1, 1, NULL, NULL, '2025-11-20 17:17:38', '2025-11-20 17:17:38', NULL, '', ''),
+(7, 'Mike Johnson', 'mike.johnson@obecno.com', 'mike-johnson', '$2y$10$wf2Zm4y5Dj7HBEUR1qOUP.Oh56tPt7CnO5n8LPCyQKnTzL8joHSw.', NULL, NULL, 1, 1, NULL, NULL, '2025-11-20 17:17:39', '2025-11-20 17:17:39', NULL, '', ''),
+(8, 'John Doen', 'john.doen@obecno.com', 'john-doen', '$2y$10$amu76OeFNNaiZuKxr6r7Rueoz4Gj7iwE.sNMODClPj7eVpm2R0ox.', NULL, NULL, 1, 1, NULL, NULL, '2025-11-20 17:27:12', '2025-11-20 17:27:12', NULL, '', ''),
+(9, 'Janey Smith', 'janey.smith@obecno.com', 'janey-smith', '$2y$10$HR9R/iIHwyb3fmrecy8mhO.v/jBpL6F7l8LHBG/I/zup8Usaklsme', NULL, '1763982129_joney.jpg', 1, 1, NULL, NULL, '2025-11-20 17:27:12', '2025-11-26 03:53:27', NULL, '', 'idBdn1n9QtQGI4dzDp1RZCZLiiksX561eROZUoLTNjStRYt1OD3dBjAN1lAC'),
+(10, 'Boby Johnson', 'boby.johnson@obecno.com', 'boby-johnson', '$2y$10$HR9R/iIHwyb3fmrecy8mhO.v/jBpL6F7l8LHBG/I/zup8Usaklsme', NULL, '1763724259_boby-johnson.jpeg', 1, 1, NULL, NULL, '2025-11-20 17:27:12', '2025-11-26 03:53:13', NULL, '', 'UjmdzelqLrzfTieJ9AALjPHInZIPgPvpwdoYkcbi4upHjDdmRgTyMECqX1w4');
 
 -- --------------------------------------------------------
 
@@ -941,6 +1055,8 @@ CREATE TABLE `users_userroles` (
   `user_id` bigint UNSIGNED NOT NULL,
   `userrole_id` bigint UNSIGNED NOT NULL,
   `company_id` int NOT NULL,
+  `department_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -950,9 +1066,16 @@ CREATE TABLE `users_userroles` (
 -- Dumping data for table `users_userroles`
 --
 
-INSERT INTO `users_userroles` (`id`, `user_id`, `userrole_id`, `company_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 1, NULL, NULL, NULL),
-(4, 3, 5, 3, '2024-12-05 16:50:54', '2024-12-05 16:50:54', NULL);
+INSERT INTO `users_userroles` (`id`, `user_id`, `userrole_id`, `company_id`, `department_id`, `location_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 0, NULL, 0, NULL, NULL, NULL),
+(6, 4, 3, 1, 15, 1, '2025-11-17 13:12:27', '2025-11-24 08:01:02', NULL),
+(7, 4, 3, 2, 15, NULL, '2025-11-19 10:32:02', '2025-11-19 10:32:02', NULL),
+(8, 5, 7, 1, 5, 1, '2025-11-20 17:17:38', '2025-11-20 17:19:01', NULL),
+(9, 6, 8, 1, 13, 1, '2025-11-20 17:17:38', '2025-11-20 17:18:52', NULL),
+(10, 7, 9, 1, 1, 1, '2025-11-20 17:17:39', '2025-11-20 17:18:42', NULL),
+(11, 8, 7, 1, 5, 1, '2025-11-20 17:27:12', '2025-11-20 17:29:39', NULL),
+(12, 9, 10, 1, 5, 1, '2025-11-20 17:27:12', '2025-11-20 17:29:32', NULL),
+(13, 10, 8, 1, 20, 1, '2025-11-20 17:27:12', '2025-11-20 17:28:57', NULL);
 
 -- --------------------------------------------------------
 
@@ -1055,17 +1178,23 @@ ALTER TABLE `companies`
   ADD UNIQUE KEY `title` (`title`);
 
 --
+-- Indexes for table `companies_modules`
+--
+ALTER TABLE `companies_modules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `companysettings`
+--
+ALTER TABLE `companysettings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `countries`
 --
 ALTER TABLE `countries`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `title` (`title`);
-
---
--- Indexes for table `countries_companies`
---
-ALTER TABLE `countries_companies`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `currencies`
@@ -1118,6 +1247,25 @@ ALTER TABLE `leaves`
 ALTER TABLE `leavetypes`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `title` (`title`);
+
+--
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `modules`
+--
+ALTER TABLE `modules`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `title` (`title`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `payments`
@@ -1190,6 +1338,7 @@ ALTER TABLE `userroles`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
   ADD KEY `users_country_id_foreign` (`country_id`),
   ADD KEY `users_city_id_foreign` (`city_id`);
 
@@ -1243,7 +1392,7 @@ ALTER TABLE `assettypes`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1273,19 +1422,25 @@ ALTER TABLE `cms`
 -- AUTO_INCREMENT for table `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `companies_modules`
+--
+ALTER TABLE `companies_modules`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `companysettings`
+--
+ALTER TABLE `companysettings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `countries_companies`
---
-ALTER TABLE `countries_companies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `currencies`
@@ -1315,7 +1470,7 @@ ALTER TABLE `employmenttypes`
 -- AUTO_INCREMENT for table `holidays`
 --
 ALTER TABLE `holidays`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `invoices`
@@ -1327,13 +1482,25 @@ ALTER TABLE `invoices`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `leavetypes`
 --
 ALTER TABLE `leavetypes`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `modules`
+--
+ALTER TABLE `modules`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -1393,19 +1560,19 @@ ALTER TABLE `timezones`
 -- AUTO_INCREMENT for table `userroles`
 --
 ALTER TABLE `userroles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users_userroles`
 --
 ALTER TABLE `users_userroles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `wages`

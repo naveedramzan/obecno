@@ -13,6 +13,11 @@ class AdminController extends Controller
     }
 
     public function adminSave(Request $request, $table){
+        // Check authentication
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
+        }
+        
         $dataField = [];
         foreach($request->all() as $key => $val){
             if($key != '_token'
@@ -46,6 +51,11 @@ class AdminController extends Controller
     }
 
     public function adminAdd($table){
+        // Check authentication
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
+        }
+        
         $notShow = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
         $schema = DB::select(\DB::raw('SHOW COLUMNS FROM '.$table));
@@ -53,11 +63,21 @@ class AdminController extends Controller
     }
 
     public function adminDelete(Request $request, $table, $id){
+        // Check authentication
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
+        }
+        
         DB::table($table)->where('id', $id)->delete();
         return redirect('admin-list-'.$table)->with('success', 'Record deleted!');
     }
 
     public function adminUpdate(Request $request, $table, $id){
+        // Check authentication
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
+        }
+        
         $dataField = [];
         foreach($request->all() as $key => $val){
             if($key != '_token'){
@@ -87,6 +107,10 @@ class AdminController extends Controller
         
     }
     public function adminEdit(Request $request, $table, $id){
+        // Check authentication
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
+        }
 
         $notShow = ['id', 'created_at', 'updated_at', 'deleted_at'];
         
@@ -97,6 +121,11 @@ class AdminController extends Controller
 
     public function adminList(Request $request, $table, $id = null)
     {
+        // Check authentication
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
+        }
+        
         if($table == 'employees'){
             $table = 'users';
             $join = 'employees';
@@ -155,6 +184,9 @@ class AdminController extends Controller
                     break;
                 case 'modulefunctions':
                     $dataTable->where('module_id', '=', $request->id);
+                    break;
+                case 'companies_modules':
+                    $dataTable->where('company_id', '=', $request->id);
                     break;
             }      
         }
@@ -345,6 +377,15 @@ class AdminController extends Controller
                     $fieldsList[] = 'title';
                     $fieldsList[] = 'code';
                     $fieldsList[] = 'symbol';
+                    break;
+                case 'companies_modules':
+                    $fieldsList[] = 'company_id';
+                    $fieldsList[] = 'module_id';
+                    break;
+                case 'subscriptionplanhistory':
+                    $fieldsList[] = 'company_id';
+                    $fieldsList[] = 'old_price';
+                    $fieldsList[] = 'new_price';
                     break;
                 default:
                     $fieldsList[] = 'title';

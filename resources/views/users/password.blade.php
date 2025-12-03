@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('company-admin')
 @section('content')
    
    <div class="wrapper d-flex flex-column min-vh-100 bg-light">

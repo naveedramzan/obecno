@@ -1,53 +1,82 @@
-<div class="fluid-container">
-    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
-        
-        <a class="navbar-brand mr-0 mr-md-2" href="{{ url('/') }}" aria-label="Bootstrap" style="float:left;">
-            <img src="/front/images/logo.png" width="200" style="float:left;">    
-        </a>
-        
-        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="float:right;">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link py-0" href="{{ url('/') }}" style="line-height:40px;float:left; padding-right:30px;">Home</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCats" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Categories
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCats">
-                        <a class="dropdown-item" href="http://{{ getDomain()}}">Main Site</a>
-                        @foreach(allCategories() as $key => $value)
-                            <a class="dropdown-item" href="http://{{ $key }}.{{ getDomain()}}">{{ $value }}</a>
-                        @endforeach
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Companies
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownComps">
-                        <a class="dropdown-item" href="http://{{ getDomain()}}">Main Site</a>
-                        @if(@$allCompaniesHomepage)
-                            @foreach($allCompaniesHomepage as $ach)
-                                <a class="dropdown-item" href="{{ url('/') }}/{{ $ach->slug }}">{{ $ach->title }}</a>
-                            @endforeach
-                        @endif
-                    </div>
-                </li>
-                <li class="nav-item"><a class="nav-link py-0" href="{{ url('/product-features') }}" style="line-height:40px;float:left; padding-right:30px;">Features</a></li>
-                <li class="nav-item"><a class="nav-link py-0" href="{{ url('/about-us') }}" style="line-height:40px;float:left; padding-right:30px;">About Us</a></li>
+<div class="header-container">
+    <div class="header">
+        <div class="header-wrapper">
+            <div class="header-left">
                 
-                <li class="nav-item"><a class="nav-link py-0" href="{{ url('/login') }}" style="line-height:40px;float:left; padding-right:30px;">Login</a></li>
-            </ul>
-            <div class="clearfix"></div>
+                <div class="mobile-menu-button">
+                    <button class="hamburger-btn" aria-label="Toggle mobile menu">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                </div>
+            
+                <div class="logo-section">
+                    <a href="{{ url('/') }}">
+                        <img src="/front/images/logo.png" alt="Obecno Logo" class="header-logo">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <nav class="navigation-menu">
+                    <div class="menu-item">
+                        <span class="menu-text">Home</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-text">Features</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-text">Pricing</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-text">About</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-text">Contact</span>
+                    </div>
+                    <div class="menu-item active" onclick="window.location='{{ url('/dashboard') }}'">
+                        <span class="menu-text">My Account</span>
+                    </div>
+                </nav>
+            </div>
         </div>
-        
-        
-    </header>    
+    </div>
+
+    <div class="mobile-menu-overlay"></div>
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            
+            <button class="mobile-menu-close" aria-label="Close mobile menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="mobile-navigation">
+            
+            <div class="mobile-menu-item">
+                <span class="mobile-menu-text">Home</span>
+                <i class="fas fa-chevron-right mobile-menu-arrow"></i>
+            </div>
+            <div class="mobile-menu-item">
+                <span class="mobile-menu-text">Features</span>
+                <i class="fas fa-chevron-right mobile-menu-arrow"></i>
+            </div>
+            <div class="mobile-menu-item">
+                <span class="mobile-menu-text">Pricings</span>
+                <i class="fas fa-chevron-right mobile-menu-arrow"></i>
+            </div>
+            <div class="mobile-menu-item">
+                <span class="mobile-menu-text">About</span>
+                <i class="fas fa-chevron-right mobile-menu-arrow"></i>
+            </div>
+            <div class="mobile-menu-item">
+                <span class="mobile-menu-text">Contact</span>
+                <i class="fas fa-chevron-right mobile-menu-arrow"></i>
+            </div>
+            <div class="mobile-menu-item active">
+                <span class="mobile-menu-text">My Account</span>
+                <i class="fas fa-chevron-right mobile-menu-arrow"></i>
+            </div>
+        </nav>
+    </div>
 </div>
-<script src="{{ url('/') }}/plugins/jQuery/jquery.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('#navbarDropdown').click(function(){
-            $('[aria-labelledby=navbarDropdown]').toggle();
-        });
-    });
-</script>
